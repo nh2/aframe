@@ -224,7 +224,7 @@ Component.prototype = {
     // Components are not initialized until the entity has loaded
     if (!el.hasLoaded) {
       this.updateCachedAttrValue(attrValue);
-      return;
+      return false;
     }
 
     isSinglePropSchema = isSingleProp(this.schema);
@@ -243,7 +243,7 @@ Component.prototype = {
 
     if (!this.initialized) {
       // Component is being already initialized.
-      if (el.initializingComponents[this.name]) { return; }
+      if (el.initializingComponents[this.name]) { return false; }
       // Prevent infinite loop in case of init method setting same component on the entity.
       el.initializingComponents[this.name] = true;
       // Initialize component.
@@ -262,13 +262,14 @@ Component.prototype = {
       el.emit('componentinitialized', this.evtDetail, false);
     } else {
       // Don't update if properties haven't changed
-      if (utils.deepEqual(this.oldData, this.data)) { return; }
+      if (utils.deepEqual(this.oldData, this.data)) { return false; }
      // Store current data as previous data for future updates.
       this.oldData = extendProperties({}, this.data, isSinglePropSchema);
       // Update component.
       this.update(oldData);
       this.throttledEmitComponentChanged();
     }
+    return true;
   },
 
   /**

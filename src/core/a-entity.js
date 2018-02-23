@@ -550,7 +550,10 @@ var proto = Object.create(ANode.prototype, {
           return;
         }
         // Component already initialized. Update component.
-        component.updateProperties(attrValue, clobber);
+        var updated = component.updateProperties(attrValue, clobber);
+        if (updated) {
+          this.sceneEl.setDirtyFrame();
+        }
         return;
       }
 

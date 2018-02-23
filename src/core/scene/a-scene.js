@@ -62,6 +62,7 @@ module.exports.AScene = registerElement('a-scene', {
 
     init: {
       value: function () {
+        this.dirtyFrame = true;
         this.behaviors = {tick: [], tock: []};
         this.hasLoaded = false;
         this.isPlaying = false;
@@ -467,6 +468,8 @@ module.exports.AScene = registerElement('a-scene', {
         camera.updateProjectionMatrix();
         // Notify renderer of size change.
         this.renderer.setSize(size.width, size.height);
+        // set the frame as dirty
+        this.setDirtyFrame();
       },
       writable: window.debug
     },
@@ -632,13 +635,25 @@ module.exports.AScene = registerElement('a-scene', {
         if (this.isPlaying) { this.tick(this.time, delta); }
 
         this.animationFrameID = effect.requestAnimationFrame(this.render);
-        effect.render(this.object3D, this.camera, this.renderTarget);
+        // the injector doesn't use setAttribute, so we always rerender
+        // while paused, which is a hacky way of checking when the
+        // inspector is open.
+        if (this.dirtyFrame || !this.isPlaying) {
+          effect.render(this.object3D, this.camera, this.renderTarget);
+          this.dirtyFrame = false;
+        }
 
         if (this.isPlaying) { this.tock(this.time, delta); }
 
         this.effect.submitFrame();
       },
       writable: true
+    },
+
+    setDirtyFrame: {
+      value: function () {
+        this.dirtyFrame = true;
+      }
     }
   })
 });
