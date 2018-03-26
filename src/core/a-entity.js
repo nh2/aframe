@@ -463,6 +463,7 @@ var proto = Object.create(ANode.prototype, {
 
       component.pause();
       component.remove();
+      this.sceneEl.setDirtyFrame();
       delete this.components[name];
       this.emit('componentremoved', component.evtDetail);
     },
