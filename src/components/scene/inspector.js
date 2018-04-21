@@ -72,7 +72,7 @@ module.exports.Component = registerComponent('inspector', {
     var self = this;
     var script;
 
-    if (AFRAME.INSPECTOR || AFRAME.inspectorInjected) { return; }
+    if (!window.anapoDebug || AFRAME.INSPECTOR || AFRAME.inspectorInjected) { return; }
 
     this.showLoader();
 
