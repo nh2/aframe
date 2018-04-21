@@ -78454,9 +78454,11 @@ _dereq_('./core/a-mixin');
 _dereq_('./extras/components/');
 _dereq_('./extras/primitives/');
 
-console.log('A-Frame Version: 0.8.0 (Date 2018-04-21, Commit #34da9b2)');
-console.log('three Version:', pkg.dependencies['three']);
-console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
+if (window.anapoDebug) {
+  console.log('A-Frame Version: 0.8.0 (Date 2018-04-21, Commit #62fa403)');
+  console.log('three Version:', pkg.dependencies['three']);
+  console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
+}
 
 module.exports = window.AFRAME = {
   AComponent: _dereq_('./core/component').Component,
