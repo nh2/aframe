@@ -83,9 +83,11 @@ require('./core/a-mixin');
 require('./extras/components/');
 require('./extras/primitives/');
 
-console.log('A-Frame Version: 0.8.0 (Date 2018-03-27, Commit #0bf012b)');
-console.log('three Version:', pkg.dependencies['three']);
-console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
+if (window.anapoDebug) {
+  console.log('A-Frame Version: 0.8.0 (Date 2018-03-27, Commit #0bf012b)');
+  console.log('three Version:', pkg.dependencies['three']);
+  console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
+}
 
 module.exports = window.AFRAME = {
   AComponent: require('./core/component').Component,
