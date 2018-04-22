@@ -84,7 +84,7 @@ require('./extras/components/');
 require('./extras/primitives/');
 
 if (window.anapoDebug) {
-  console.log('A-Frame Version: 0.8.0 (Date 2018-04-21, Commit #b3ef5274)');
+  console.log('A-Frame Version: 0.8.0 (Date 2018-04-22, Commit #dfb52962)');
   console.log('three Version:', pkg.dependencies['three']);
   console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 }
