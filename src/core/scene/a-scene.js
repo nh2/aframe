@@ -626,7 +626,10 @@ module.exports.AScene = registerElement('a-scene', {
         // the injector doesn't use setAttribute, so we always rerender
         // while paused, which is a hacky way of checking when the
         // inspector is open.
-        if (this.dirtyFrame || !this.isPlaying) {
+        //
+        // also, always rerender when in VR, since the camera is
+        // manipulated directly in that case.
+        if (this.dirtyFrame || !this.isPlaying || this.is('vr-mode')) {
           renderer.animate(this.render);
           renderer.render(this.object3D, this.camera, this.renderTarget);
           this.dirtyFrame = false;
