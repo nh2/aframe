@@ -43,7 +43,7 @@
     "style-attr": "^1.0.2",
     "three": "github:bitonic/three.js#f1d3ea8b2bc274567694c710235bc813a8bf96d5",
     "three-bmfont-text": "^2.1.0",
-    "webvr-polyfill": "^0.9.40"
+    "webvr-polyfill": "^0.10.5"
   },
   "devDependencies": {
     "browserify": "^13.1.0",
@@ -100,6 +100,7 @@
       "build/**",
       "dist/**",
       "examples/**/shaders/*.js",
+      "src/utils/device.js",
       "**/vendor/**"
     ]
   },

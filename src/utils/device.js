@@ -1,6 +1,10 @@
+// initialize WebVR polyfill
+var WebVRPolyfill = require('webvr-polyfill');
+var _polyfill = new WebVRPolyfill();
+
 var vrDisplay;
 var polyfilledVRDisplay;
-var POLYFILL_VRDISPLAY_ID = 'Cardboard VRDisplay (webvr-polyfill)';
+var POLYFILL_VRDISPLAY_ID = 'Cardboard VRDisplay';
 
 if (navigator.getVRDisplays) {
   navigator.getVRDisplays().then(function (displays) {
