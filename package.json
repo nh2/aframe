@@ -41,7 +41,7 @@
     "present": "0.0.6",
     "promise-polyfill": "^3.1.0",
     "style-attr": "^1.0.2",
-    "three": "github:bitonic/three.js#f1d3ea8b2bc274567694c710235bc813a8bf96d5",
+    "three": "github:bitonic/three.js#97ca19829821751beddf9f22aa06745a37cff76b",
     "three-bmfont-text": "^2.1.0",
     "webvr-polyfill": "^0.10.5"
   },
