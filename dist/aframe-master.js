@@ -73217,7 +73217,7 @@ module.exports.AScene = registerElement('a-scene', {
           // Exiting VR in embedded mode, no longer need fullscreen styles.
           if (self.hasAttribute('embedded')) { self.removeFullScreenStyles(); }
           self.resize();
-          if (self.isIOS) { utils.forceCanvasResizeSafariMobile(this.canvas); }
+          if (self.isIOS) { utils.forceCanvasResizeSafariMobile(self.canvas); }
           self.emit('exit-vr', {target: self});
         }
 
@@ -75346,7 +75346,7 @@ _dereq_('./extras/components/');
 _dereq_('./extras/primitives/');
 
 if (window.anapoDebug) {
-  console.log('A-Frame Version: 0.8.0 (Date 2018-04-28, Commit #72b78df)');
+  console.log('A-Frame Version: 0.8.0 (Date 2018-04-28, Commit #4ac7d97)');
   console.log('three Version:', pkg.dependencies['three']);
   console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 }
