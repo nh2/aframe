@@ -3,13 +3,11 @@ var WebVRPolyfill = require('webvr-polyfill');
 var _polyfill = new WebVRPolyfill();
 
 var vrDisplay;
-var polyfilledVRDisplay;
 var POLYFILL_VRDISPLAY_ID = 'Cardboard VRDisplay';
 
 if (navigator.getVRDisplays) {
   navigator.getVRDisplays().then(function (displays) {
     vrDisplay = displays.length && displays[0];
-    polyfilledVRDisplay = vrDisplay.displayName === POLYFILL_VRDISPLAY_ID;
   });
 }
 
@@ -116,7 +114,7 @@ module.exports.PolyfillControls = function PolyfillControls (object) {
   if (window.VRFrameData) { frameData = new window.VRFrameData(); }
   this.update = function () {
     var pose;
-    if (!vrDisplay || !polyfilledVRDisplay) { return; }
+    if (!vrDisplay) { return; }
     vrDisplay.getFrameData(frameData);
     pose = frameData.pose;
     if (pose.orientation !== null) {
