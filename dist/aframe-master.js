@@ -3595,7 +3595,9 @@ module.exports = function(dtype) {
 },{}],15:[function(_dereq_,module,exports){
 /*eslint new-cap:0*/
 var dtype = _dereq_('dtype')
+
 module.exports = flattenVertexData
+
 function flattenVertexData (data, output, offset) {
   if (!data) throw new TypeError('must specify data as first parameter')
   offset = +(offset || 0) | 0
@@ -3603,6 +3605,7 @@ function flattenVertexData (data, output, offset) {
   if (Array.isArray(data) && Array.isArray(data[0])) {
     var dim = data[0].length
     var length = data.length * dim
+    var i, j, k, l
 
     // no output specified, create a new typed array
     if (!output || typeof output === 'string') {
@@ -3615,20 +3618,30 @@ function flattenVertexData (data, output, offset) {
         ' does not match destination length ' + dstLength)
     }
 
-    for (var i = 0, k = offset; i < data.length; i++) {
-      for (var j = 0; j < dim; j++) {
-        output[k++] = data[i][j]
+    for (i = 0, k = offset; i < data.length; i++) {
+      for (j = 0; j < dim; j++) {
+        output[k++] = data[i][j] === null ? NaN : data[i][j]
       }
     }
   } else {
     if (!output || typeof output === 'string') {
       // no output, create a new one
       var Ctor = dtype(output || 'float32')
-      if (offset === 0) {
-        output = new Ctor(data)
-      } else {
+
+      // handle arrays separately due to possible nulls
+      if (Array.isArray(data) || output === 'array') {
         output = new Ctor(data.length + offset)
-        output.set(data, offset)
+        for (i = 0, k = offset, l = output.length; k < l; k++, i++) {
+          output[k] = data[i] === null ? NaN : data[i]
+        }
+      } else {
+        if (offset === 0) {
+          output = new Ctor(data)
+        } else {
+          output = new Ctor(data.length + offset)
+
+          output.set(data, offset)
+        }
       }
     } else {
       // store output in existing array
@@ -25404,8 +25417,6 @@ function rebuildAttribute (attrib, data, itemSize) {
 
 		var poseTarget = null;
 
-		var standingMatrix = new Matrix4();
-
 		if ( typeof window !== 'undefined' && 'VRFrameData' in window ) {
 
 			frameData = new window.VRFrameData();
@@ -25413,6 +25424,11 @@ function rebuildAttribute (attrib, data, itemSize) {
 		}
 
 		var matrixWorldInverse = new Matrix4();
+		var poseOrientation = new Quaternion();
+		var camPosition = new Vector3();
+		var identityScale = new Vector3(1, 1, 1);
+		var camVRToSitting = new Matrix4();
+		var sittingToCamVR = new Matrix4();
 
 		var cameraL = new PerspectiveCamera();
 		cameraL.bounds = new Vector4( 0.0, 0.0, 0.5, 1.0 );
@@ -25460,6 +25476,7 @@ function rebuildAttribute (attrib, data, itemSize) {
 		//
 
 		this.enabled = false;
+		this.userHeight = 1.6;
 
 		this.getDevice = function () {
 
@@ -25480,7 +25497,6 @@ function rebuildAttribute (attrib, data, itemSize) {
 		};
 
 		this.getCamera = function ( camera ) {
-
 			if ( device === null ) return camera;
 
 			device.depthNear = camera.near;
@@ -25488,11 +25504,16 @@ function rebuildAttribute (attrib, data, itemSize) {
 
 			device.getFrameData( frameData );
 
-			//
-
+			var pose = frameData.pose;
 			var poseObject = poseTarget !== null ? poseTarget : camera;
 
-			var stageParameters = device.stageParameters;
+			camera.getWorldPosition(camPosition);
+			camera.getWorldQuaternion(poseOrientation);
+			camVRToSitting.compose(camPosition, poseOrientation, identityScale);
+			sittingToCamVR = camVRToSitting.getInverse(camVRToSitting);
+
+			// We want to manipulate poseObject by its position and quaternion components since users may rely on them.
+			poseObject.updateMatrixWorld();
 
 			if ( device.isPresenting === false ) return camera;
 
@@ -25507,8 +25528,8 @@ function rebuildAttribute (attrib, data, itemSize) {
 			cameraVR.matrixWorld.copy( camera.matrixWorld );
 			cameraVR.matrixWorldInverse.copy( camera.matrixWorldInverse );
 
-			cameraL.matrixWorldInverse.fromArray( frameData.leftViewMatrix );
-			cameraR.matrixWorldInverse.fromArray( frameData.rightViewMatrix );
+			cameraL.matrixWorldInverse.copy(sittingToCamVR);
+			cameraR.matrixWorldInverse.copy(sittingToCamVR);
 
 			var parent = poseObject.parent;
 
@@ -25557,12 +25578,6 @@ function rebuildAttribute (attrib, data, itemSize) {
 			}
 
 			return cameraVR;
-
-		};
-
-		this.getStandingMatrix = function () {
-
-			return standingMatrix;
 
 		};
 
@@ -75379,7 +75394,7 @@ _dereq_('./extras/components/');
 _dereq_('./extras/primitives/');
 
 if (window.anapoDebug) {
-  console.log('A-Frame Version: 0.8.0 (Date 2018-04-29, Commit #3b832dd3)');
+  console.log('A-Frame Version: 0.8.0 (Date 2018-04-30, Commit #721de498)');
   console.log('three Version:', pkg.dependencies['three']);
   console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 }
