@@ -75394,7 +75394,7 @@ _dereq_('./extras/components/');
 _dereq_('./extras/primitives/');
 
 if (window.anapoDebug) {
-  console.log('A-Frame Version: 0.8.0 (Date 2018-04-30, Commit #721de498)');
+  console.log('A-Frame Version: 0.8.0 (Date 2018-04-30, Commit #59b16464)');
   console.log('three Version:', pkg.dependencies['three']);
   console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 }
@@ -77144,13 +77144,11 @@ var WebVRPolyfill = _dereq_('webvr-polyfill');
 var _polyfill = new WebVRPolyfill();
 
 var vrDisplay;
-var polyfilledVRDisplay;
 var POLYFILL_VRDISPLAY_ID = 'Cardboard VRDisplay';
 
 if (navigator.getVRDisplays) {
   navigator.getVRDisplays().then(function (displays) {
     vrDisplay = displays.length && displays[0];
-    polyfilledVRDisplay = vrDisplay.displayName === POLYFILL_VRDISPLAY_ID;
   });
 }
 
@@ -77257,7 +77255,7 @@ module.exports.PolyfillControls = function PolyfillControls (object) {
   if (window.VRFrameData) { frameData = new window.VRFrameData(); }
   this.update = function () {
     var pose;
-    if (!vrDisplay || !polyfilledVRDisplay) { return; }
+    if (!vrDisplay) { return; }
     vrDisplay.getFrameData(frameData);
     pose = frameData.pose;
     if (pose.orientation !== null) {
