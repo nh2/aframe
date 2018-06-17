@@ -491,6 +491,7 @@ module.exports.AScene = registerElement('a-scene', {
         renderer = this.renderer = new THREE.WebGLRenderer({
           canvas: this.canvas,
           antialias: shouldAntiAlias(this),
+          premultipliedAlpha: false,
           alpha: true
         });
         renderer.setPixelRatio(window.devicePixelRatio);
