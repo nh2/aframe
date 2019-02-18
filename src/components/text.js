@@ -53,9 +53,10 @@ module.exports.Component = registerComponent('text', {
     anchor: {default: 'center', oneOf: ['left', 'right', 'center', 'align']},
     baseline: {default: 'center', oneOf: ['top', 'center', 'bottom']},
     color: {type: 'color', default: '#FFF'},
-    font: {type: 'string', default: DEFAULT_FONT},
+    depthTest: {type: 'boolean', default: true},
+    font: {type: 'asset', default: DEFAULT_FONT},
     // `fontImage` defaults to the font name as a .png (e.g., mozillavr.fnt -> mozillavr.png).
-    fontImage: {type: 'string'},
+    fontImage: {type: 'asset'},
     // `height` has no default, will be populated at layout.
     height: {type: 'number'},
     letterSpacing: {type: 'number', default: 0},
@@ -183,6 +184,7 @@ module.exports.Component = registerComponent('text', {
 
     // Set new shader material.
     this.material.side = shaderData.side;
+    this.material.depthTest = data.depthTest;
     if (this.mesh) { this.mesh.material = this.material; }
   },
 

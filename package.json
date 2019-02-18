@@ -46,8 +46,8 @@
     "webvr-polyfill": "^0.10.5"
   },
   "devDependencies": {
-    "browserify": "^13.1.0",
-    "browserify-derequire": "^0.9.4",
+    "browserify": "^13.3.0",
+    "browserify-derequire": "^0.9.6",
     "browserify-istanbul": "^2.0.0",
     "budo": "^9.2.0",
     "chai": "^3.5.0",
@@ -74,7 +74,7 @@
     "karma-sinon-chai": "1.2.4",
     "lolex": "^1.5.1",
     "markserv": "github:sukima/markserv#feature/fix-broken-websoketio-link",
-    "minifyify": "^7.3.3",
+    "minifyify": "^7.3.5",
     "mocha": "^3.0.2",
     "mozilla-download": "^1.1.1",
     "replace-in-file": "^2.5.3",
